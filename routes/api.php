@@ -26,12 +26,13 @@ Route::post('/login/sms', [\App\Http\Controllers\Auth\LoginController::class, 's
 Route::post('/login/sms/verify', [\App\Http\Controllers\Auth\LoginController::class, 'verifySms']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/clinic', [\App\Http\Controllers\Clinic\ClinicController::class, 'show']);
+    Route::get('/clinic', [\App\Http\Controllers\Clinic\ClinicController::class, 'show'])->name('clinic.show');
 
-    Route::post('/patients', [\App\Http\Controllers\Patient\PatientController::class, 'add']);
-    Route::get('/patients/{id}', [\App\Http\Controllers\Patient\PatientController::class, 'show']);
-    Route::get('/patients', [\App\Http\Controllers\Patient\PatientController::class, 'list']);
+    Route::post('/patients', [\App\Http\Controllers\Patient\PatientController::class, 'add'])->name('patients.add');
+    Route::get('/patients/{id}', [\App\Http\Controllers\Patient\PatientController::class, 'show'])->name('patients.show');
+    Route::get('/patients', [\App\Http\Controllers\Patient\PatientController::class, 'list'])->name('patients.list');
 
-    Route::post('/appointments', [\App\Http\Controllers\Appointment\AppointmentController::class, 'add']);
-    Route::post('/appointments/{id}/cancel', [\App\Http\Controllers\Appointment\AppointmentController::class, 'cancel']);
+    Route::post('/appointments', [\App\Http\Controllers\Appointment\AppointmentController::class, 'add'])->name('appointments.add');
+    Route::post('/appointments/{id}/cancel', [\App\Http\Controllers\Appointment\AppointmentController::class, 'cancel'])->name('appointments.cancel');;
+    Route::post('/appointments/{id}/move', [\App\Http\Controllers\Appointment\AppointmentController::class, 'move'])->name('appointments.move');
 });

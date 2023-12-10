@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Models\Appointment;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 
 class AppointmentRepository
@@ -24,7 +25,7 @@ class AppointmentRepository
         return $this->query()->findOrFail($id);
     }
 
-    public function getDoctorAppointmentsForDay(User $doctor, Carbon $date)
+    public function getDoctorAppointmentsForDay(User $doctor, Carbon|CarbonImmutable $date)
     {
         $date = clone $date;
 

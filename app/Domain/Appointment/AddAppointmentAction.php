@@ -41,10 +41,10 @@ class AddAppointmentAction
         //check if doctor is available at this time
         $appointments = $this->appointmentRepository->getDoctorAppointmentsForDay($doctor, $payload->planned_datetime);
         foreach ($appointments as $appointment) {
-            //clone to avoid mutation
-            $planned_datetime = clone $payload->planned_datetime;
-            $appointmentEnd = $planned_datetime->addMinutes($appointment->planned_duration);
-            if ($payload->planned_datetime->between($appointment->planned_datetime, $appointmentEnd)) {
+            if ($appointment->planned_datetime->between(
+                $payload->planned_datetime,
+                $payload->planned_datetime->copy()->addMinutes($payload->planned_duration),
+            )) {
                 throw new AppointmentException('Doctor is not available at this time');
             }
         }
