@@ -2,10 +2,10 @@
 
 namespace App\Repository;
 
+use App\Models\Appointment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Doctor;
 
 class AppointmentRepository
 {
@@ -17,6 +17,11 @@ class AppointmentRepository
         if (auth()->check()) {
             $this->clinicId = auth()->user()->clinic_id;
         }
+    }
+
+    public function getById(int $id): Appointment
+    {
+        return $this->query()->findOrFail($id);
     }
 
     public function getDoctorAppointmentsForDay(User $doctor, Carbon $date)
@@ -34,9 +39,9 @@ class AppointmentRepository
     private function query(): Builder
     {
         if (! $this->clinicId) {
-            return \App\Models\Appointment::query();
+            return Appointment::query();
         }
 
-        return \App\Models\Appointment::query()->where('clinic_id', $this->clinicId);
+        return Appointment::query()->where('clinic_id', $this->clinicId);
     }
 }
