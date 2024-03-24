@@ -12,6 +12,7 @@ class AddPatientDTO
         public string $dateOfBirth,
         public string $gender,
         public ?string $medicalHistory = null,
+        public ?string $allergies = null,
     ) {
     }
 }

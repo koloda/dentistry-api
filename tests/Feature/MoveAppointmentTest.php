@@ -72,7 +72,7 @@ class MoveAppointmentTest extends TestCase
 
         $this->actingAs($doctor)
             ->postJson(route('appointments.move', $appointment->id), [
-                'planned_datetime' => $planedDatetime->subDay()->format('Y-m-d H:i'),
+                'planned_datetime' => $planedDatetime->subDays(2)->format('Y-m-d H:i'),
             ])
             ->assertStatus(400);
     }

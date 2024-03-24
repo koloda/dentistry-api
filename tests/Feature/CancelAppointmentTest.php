@@ -19,7 +19,7 @@ class CancelAppointmentTest extends TestCase
         $doctor = $this->createUser();
         $this->withoutExceptionHandling();
         $appointment = Appointment::factory()->create([
-            'status' => AppointmentStatus::Scheduled,
+            'status' => AppointmentStatus::Scheduled->value,
             'doctor_id' => $doctor->id,
             'clinic_id' => $doctor->clinic_id,
         ]);
@@ -42,7 +42,7 @@ class CancelAppointmentTest extends TestCase
         ]);
         $this->expectException(AppointmentException::class);
         $response = $this->authorizedRequest('postJson', '/api/appointments/' . $appointment->id . '/cancel');
-        $response->assertStatus(400);
+            $response->assertStatus(400);
         $response->assertJson([
             'message' => 'Appointment can be cancelled only if it is scheduled',
         ]);

@@ -23,6 +23,7 @@ class AddPatientAction
         $patient->date_of_birth = $payload->dateOfBirth;
         $patient->gender = $payload->gender;
         $patient->medical_history = $payload->medicalHistory;
+        $patient->allergies = $payload->allergies;
 
         $patient->clinic()->associate($clinic);
 

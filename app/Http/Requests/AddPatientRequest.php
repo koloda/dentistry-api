@@ -22,19 +22,21 @@ class AddPatientRequest extends FormRequest
             'gender' => ['required', new In(['male', 'female'])],
             'date_of_birth' => 'required|date',
             'medical_history' => 'string|nullable',
+            'allergies' => 'string|nullable',
         ];
     }
 
     public function toDTO(): AddPatientDTO
     {
         return new AddPatientDTO(
-            clinicId: auth()->user()->clinic_id,
+            clinicId: $this->user()->clinic_id,
             name: $this->input('name'),
             phone: $this->input('phone'),
             address: $this->input('address'),
             dateOfBirth: $this->input('date_of_birth'),
             gender: $this->input('gender'),
             medicalHistory: $this->input('medical_history'),
+            allergies: $this->input('allergies'),
         );
     }
 }

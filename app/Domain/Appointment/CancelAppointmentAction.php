@@ -2,18 +2,12 @@
 
 namespace App\Domain\Appointment;
 
-use App\Repository\AppointmentRepository;
+use App\Models\Appointment;
 
 class CancelAppointmentAction
 {
-    public function __construct(
-        private AppointmentRepository $appointmentRepository
-    ) {
-    }
-
-    public function execute(int $appointmentId): void
+    public function execute(Appointment $appointment): void
     {
-        $appointment = $this->appointmentRepository->getById($appointmentId);
         if ($appointment->status !== AppointmentStatus::Scheduled) {
             throw new AppointmentException('Appointment can be cancelled only if it is scheduled');
         }

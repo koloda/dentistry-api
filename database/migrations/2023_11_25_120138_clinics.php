@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email', 100)->nullable();
             $table->string('website', 100)->nullable();
             $table->string('logo', 100)->nullable();
-            $table->string('description', 100)->nullable();
+            $table->text('description')->nullable();
             $table->string('status', 20)->default(\App\Domain\Clinic\ClinicStatus::ACTIVE->value);
 
             $table->timestamps();

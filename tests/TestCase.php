@@ -35,4 +35,9 @@ abstract class TestCase extends BaseTestCase
             ['Authorization' => 'Bearer '.$this->token]
         )->$method($url, $data);
     }
+
+    public function createClinic(): \App\Models\Clinic
+    {
+        return \App\Models\Clinic::factory()->create();
+    }
 }

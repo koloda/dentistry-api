@@ -19,8 +19,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $date_of_birth
  * @property string $gender
  * @property string $medical_history
+ * @property string $allergies
+ *
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ *
  * @property-read Clinic $clinic
  */
 class Patient extends Model

@@ -19,11 +19,11 @@ class ClinicFactory extends Factory
         return [
             'name' => fake()->name(),
             'address' => fake()->address(),
-            'phone' => fake()->unique()->phoneNumber(),
-            'email' => fake()->unique()->safeEmail(),
-            'website' => fake()->unique()->domainName(),
+            'phone' => fake()->e164PhoneNumber(),
+            'email' => fake()->safeEmail(),
+            'website' => fake()->domainName(),
             'logo' => fake()->imageUrl(),
-            'description' => fake()->words(10, true),
+            'description' => fake()->words(4, true),
             'status' => fake()->randomElement(['active', 'inactive']),
         ];
     }

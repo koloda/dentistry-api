@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class AppointmentRepository
 {
@@ -20,21 +21,27 @@ class AppointmentRepository
         }
     }
 
-    public function getById(int $id): Appointment
+    public function list(int $clinicId): Collection
     {
-        return $this->query()->findOrFail($id);
+        return $this->query()->where('clinic_id', $clinicId)->get();
     }
 
-    public function getDoctorAppointmentsForDay(User $doctor, Carbon|CarbonImmutable $date)
+    public function getDoctorAppointments(User $doctor, Carbon|CarbonImmutable|null $date)
     {
-        $date = clone $date;
+        $query = $this->query()->where('doctor_id', $doctor->id)
+            ->with('patient')
+            ->orderByRaw('planned_datetime ASC');
 
-        return $this->query()->where('doctor_id', $doctor->id)
-            ->whereBetween('planned_datetime', [
+
+        if ($date) {
+            $date = clone $date;
+            $query->whereBetween('planned_datetime', [
                 $date->startOfDay()->toDateTimeString(),
                 $date->endOfDay()->toDateTimeString(),
-            ])
-            ->get();
+            ]);
+        }
+
+        return $query->get();
     }
 
     private function query(): Builder

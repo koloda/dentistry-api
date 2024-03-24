@@ -6,11 +6,13 @@ use App\Models\User;
 
 class LoginServeice
 {
-    public function startLoginUsingSms(User $user): string
+    public function sendLoginSms(User $user, SmsService $smsService): string
     {
         $randomCode = $this->randomCode();
         $user->tmp_sms_code = $randomCode;
         $user->save();
+
+        $smsService->send($user->phone, 'Your verification code is: '.$randomCode);
 
         return $randomCode;
     }

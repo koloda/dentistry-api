@@ -35,7 +35,7 @@ class AuthTest extends TestCase
     {
         $user = UserFactory::new()->create(['phone' => '123456789']);
         $response = $this->postJson('/api/login/sms', ['phone' => '111111111']);
-        $response->assertStatus(404);
+        $response->assertStatus(422);
 
         $response = $this->postJson('/api/login/sms', ['phone' => $user->phone]);
         $response->assertStatus(200);
@@ -43,7 +43,7 @@ class AuthTest extends TestCase
         $smsCode = $user->tmp_sms_code;
         $this->assertDatabaseHas('users', ['id' => $user->id, 'tmp_sms_code' => $smsCode]);
         $response = $this->postJson('/api/login/sms/verify', ['phone' => '111111111', 'code' => $smsCode]);
-        $response->assertStatus(404);
+        $response->assertStatus(422);
     }
 
     public function test_sms_login_with_wrong_code(): void

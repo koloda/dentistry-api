@@ -24,10 +24,7 @@ class PatientFactory extends Factory
             'date_of_birth' => $this->faker->date,
             'gender' => $this->faker->randomElement(['male', 'female']),
             'medical_history' => $this->faker->text,
-
-            'clinic_id' => static function () {
-                return Clinic::factory()->create()->id;
-            },
+            'clinic_id' => Clinic::factory()->create(),
         ];
     }
 }

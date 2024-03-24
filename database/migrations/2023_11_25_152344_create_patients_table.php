@@ -20,6 +20,9 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->enum('gender', ['male', 'female']);
             $table->text('medical_history')->nullable();
+            $table->text('allergies')->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

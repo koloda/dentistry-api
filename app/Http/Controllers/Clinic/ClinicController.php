@@ -6,8 +6,8 @@ use App\Repository\ClinicRepository;
 
 class ClinicController
 {
-    public function show(ClinicRepository $clinicRepository)
+    public function show(ClinicRepository $clinicRepository): \App\Models\Clinic
     {
-        return $clinicRepository->getById(auth()->user()->clinic_id);
+        return $clinicRepository->getById(auth()->user()?->clinic_id);
     }
 }

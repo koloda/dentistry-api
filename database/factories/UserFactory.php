@@ -29,9 +29,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
 
-            'clinic_id' => static function () {
-                return Clinic::factory()->create()->id;
-            },
+            'clinic_id' => Clinic::factory()->create(),
         ];
     }
 

@@ -25,7 +25,7 @@ class AddPatientTest extends TestCase
         ])->postJson('/api/patients', $patient_fields);
 
         $response->assertStatus(201);
-        $this->assertDatabaseHas('patients', ['phone' => $patient_fields['phone']]);
+        $this->assertDatabaseHas('patients', ['phone' => $patient_fields['phone'] , 'clinic_id' => $user->clinic_id]);
         $response->assertJsonStructure([
             'id',
             'name',

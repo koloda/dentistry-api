@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $created_at
  * @property string $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ *
+ * @mixin IdeHelperClinic
  */
 class Clinic extends Model
 {
@@ -32,6 +34,11 @@ class Clinic extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    public function patients(): HasMany
+    {
+        return $this->hasMany(Patient::class);
     }
 
     protected $fillable = [

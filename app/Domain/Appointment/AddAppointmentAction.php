@@ -3,8 +3,9 @@
 namespace App\Domain\Appointment;
 
 use App\Domain\Patient\AddAppointmentDto;
+use App\Models\Appointment;
 
-class AddAppointmentAction
+final readonly class AddAppointmentAction
 {
     public function __construct(
         private \App\Repository\PatientRepository $patientRepository,
@@ -14,19 +15,19 @@ class AddAppointmentAction
     ) {
     }
 
-    public function execute(AddAppointmentDto $payload)
+    public function execute(AddAppointmentDto $payload): Appointment
     {
         $patient = $this->patientRepository->getById($payload->patient_id);
         $clinic = $this->clinicRepository->getById($payload->clinic_id);
         $doctor = $this->userRepository->getById($payload->doctor_id);
 
         //check if patient is already registered in clinic
-        if ($patient->clinic_id != $clinic->id) {
-            throw new AppointmentException('Patient is not registered in this clinic');
+        if ($patient->clinic_id !== $clinic->id) {
+            throw new AppointmentException(AppointmentException::PATIENT_NOT_REGISTERED);
         }
 
         //check if doctor is working in clinic
-        if ($doctor->clinic_id != $clinic->id) {
+        if ($doctor->clinic_id !== $clinic->id) {
             throw new AppointmentException('Doctor is not working in this clinic');
         }
 
@@ -39,7 +40,7 @@ class AddAppointmentAction
         }
 
         //check if doctor is available at this time
-        $appointments = $this->appointmentRepository->getDoctorAppointmentsForDay($doctor, $payload->planned_datetime);
+        $appointments = $this->appointmentRepository->getDoctorAppointments($doctor, $payload->planned_datetime);
         foreach ($appointments as $appointment) {
             if ($appointment->planned_datetime->between(
                 $payload->planned_datetime,

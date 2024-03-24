@@ -9,31 +9,29 @@ use App\Repository\UserRepository;
 class MoveAppointmentAction
 {
     public function __construct(
-        private AppointmentRepository $appointmentRepository,
-        private UserRepository $userRepository,
+        private AppointmentRepository   $appointmentRepository,
+        private readonly UserRepository $userRepository,
     ) {}
-    public function execute(int $appointmentId, MoveAppointmentDTO $dto): Appointment
+    public function execute(Appointment $appointment, MoveAppointmentDTO $dto): Appointment
     {
-        $appointment = $this->appointmentRepository->getById($appointmentId);
-
         if ($dto->planned_datetime->isPast()) {
             throw new AppointmentException('Cannot move appointment to past');
         }
 
         $doctor = $this->userRepository->getById($appointment->doctor_id);
         //check if there is no other appointment in this time
-        $appointments = $this->appointmentRepository->getDoctorAppointmentsForDay(
+        $existedAppointments = $this->appointmentRepository->getDoctorAppointments(
             $doctor,
             $dto->planned_datetime,
         );
-        foreach ($appointments as $appointment) {
-            if ($appointment->id === $appointmentId) {
+        foreach ($existedAppointments as $existedAppointment) {
+            if ($existedAppointment->id === $appointment->id) {
                 continue;
             }
 
-            if ($appointment->planned_datetime->between(
+            if ($existedAppointment->planned_datetime->between(
                 $dto->planned_datetime,
-                $dto->planned_datetime->copy()->addMinutes($dto->planned_duration ?? $appointment->planned_duration),
+                $dto->planned_datetime->copy()->addMinutes($dto->planned_duration ?? $existedAppointment->planned_duration),
             )) {
                 throw new AppointmentException('Cannot move appointment to this time');
             }

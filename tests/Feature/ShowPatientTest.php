@@ -51,7 +51,7 @@ class ShowPatientTest extends TestCase
             ['Authorization' => 'Bearer '.$token]
         )->getJson('/api/patients/'.$patient->id);
 
-        $response->assertStatus(404);
+        $response->assertStatus(403);
     }
 
     public function test_show_patient_not_found()

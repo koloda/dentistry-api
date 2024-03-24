@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repository\UserRepository;
 use App\Services\LoginServeice;
 use App\Services\SmsService;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -13,46 +14,48 @@ class LoginController extends Controller
      * Create a new controller instance.
      */
     public function __construct(
-        private SmsService $smsService,
-        private LoginServeice $loginServeice,
-        private UserRepository $userRepository,
+        private readonly SmsService $smsService,
+        private readonly LoginServeice $loginService,
+        private readonly UserRepository $userRepository,
     ) {
     }
 
     /**
      * Handle the incoming request.
+     * @throws ValidationException
      */
-    public function sendSms()
+    public function sendSms(): array
     {
         $this->validate(request(), [
-            'phone' => 'required|string',
+            'phone' => 'required|string|exists:users,phone',
         ]);
 
         $phone = request('phone');
         $user = $this->userRepository->getUserByPhone($phone);
-        $randomCode = $this->loginServeice->startLoginUsingSms($user);
-        $this->smsService->send($phone, 'Your verification code is: '.$randomCode);
+
+        $randomCode = $this->loginService->sendLoginSms($user, $this->smsService);
 
         return [
             'message' => 'SMS sent successfully',
-            'code' => config('app.env') === 'local' ? $randomCode : null,
+            'code' => $randomCode,
         ];
     }
 
     /**
      * Handle the incoming request.
+     * @throws ValidationException
      */
-    public function verifySms()
+    public function verifySms(): array
     {
         $this->validate(request(), [
-            'phone' => 'required|string',
+            'phone' => 'required|string|exists:users,phone',
             'code' => 'required|string',
         ]);
 
         $phone = request('phone');
         $code = request('code');
         $user = $this->userRepository->getUserByPhone($phone);
-        $this->loginServeice->verifySms($user, $code);
+        $this->loginService->verifySms($user, $code);
 
         // return sanctum auth token
         $token = $user->createToken('auth_token')->plainTextToken;
