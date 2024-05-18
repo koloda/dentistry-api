@@ -99,7 +99,6 @@ class AddAppointmentTest extends TestCase
 
         $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
-
         $this->expectException(AppointmentException::class);
         $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
