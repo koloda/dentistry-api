@@ -20,6 +20,7 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
+    // @phpstan-ignore-next-line
     public function authorizedRequest(string $method, string $url, array $data = []): \Illuminate\Testing\TestResponse
     {
         $methods = ['get', 'post', 'put', 'patch', 'delete', 'options', 'getJson', 'postJson', 'putJson', 'patchJson', 'deleteJson'];

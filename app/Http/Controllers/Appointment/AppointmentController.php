@@ -26,6 +26,9 @@ class AppointmentController extends Controller
         $this->authorizeResource(Appointment::class, 'appointment');
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function resourceAbilityMap(): array
     {
         return [
@@ -35,11 +38,13 @@ class AppointmentController extends Controller
         ];
     }
 
+    // @phpstan-ignore-next-line
     public function list(AppointmentRepository $repository): Collection
     {
         return $repository->list(request()->user()->clinic_id);
     }
 
+    // @phpstan-ignore-next-line
     public function agenda(AppointmentRepository $repository): Collection
     {
         return $repository->getDoctorAppointments(request()->user(), null);

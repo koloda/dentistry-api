@@ -9,9 +9,11 @@ use App\Repository\UserRepository;
 class MoveAppointmentAction
 {
     public function __construct(
-        private AppointmentRepository   $appointmentRepository,
+        private AppointmentRepository $appointmentRepository,
         private readonly UserRepository $userRepository,
-    ) {}
+    ) {
+    }
+
     public function execute(Appointment $appointment, MoveAppointmentDTO $dto): Appointment
     {
         if ($dto->planned_datetime->isPast()) {

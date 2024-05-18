@@ -33,7 +33,7 @@ class AddPatientRequest extends FormRequest
             name: $this->input('name'),
             phone: $this->input('phone'),
             address: $this->input('address'),
-            dateOfBirth: $this->input('date_of_birth'),
+            dateOfBirth: $this->date('date_of_birth')->toImmutable(),
             gender: $this->input('gender'),
             medicalHistory: $this->input('medical_history'),
             allergies: $this->input('allergies'),

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Database\Factories\PatientFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,8 +15,9 @@ class AddPatientTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_add_patient()
+    public function test_add_patient(): void
     {
+        /** @var User $user */
         $user = UserFactory::new()->create();
         $token = $user->createToken('test')->plainTextToken;
         $patient_fields = PatientFactory::new()->make(['clinic_id' => $user->clinic_id])->toArray();
@@ -25,7 +27,7 @@ class AddPatientTest extends TestCase
         ])->postJson('/api/patients', $patient_fields);
 
         $response->assertStatus(201);
-        $this->assertDatabaseHas('patients', ['phone' => $patient_fields['phone'] , 'clinic_id' => $user->clinic_id]);
+        $this->assertDatabaseHas('patients', ['phone' => $patient_fields['phone'], 'clinic_id' => $user->clinic_id]);
         $response->assertJsonStructure([
             'id',
             'name',
@@ -46,7 +48,7 @@ class AddPatientTest extends TestCase
         $response->assertJsonValidationErrors(['email', 'phone']);
     }
 
-    public function test_add_patient_without_auth()
+    public function test_add_patient_without_auth(): void
     {
         $patient_fields = PatientFactory::new()->make()->toArray();
 

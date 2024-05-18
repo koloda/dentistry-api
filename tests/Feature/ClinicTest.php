@@ -12,6 +12,7 @@ class ClinicTest extends TestCase
      */
     public function test_clinic_show(): void
     {
+        /** @var \App\Models\User $user */
         $user = UserFactory::new()->create();
         $token = $user->createToken('test')->plainTextToken;
 

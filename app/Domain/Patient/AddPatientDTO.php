@@ -2,6 +2,8 @@
 
 namespace App\Domain\Patient;
 
+use Carbon\CarbonImmutable;
+
 class AddPatientDTO
 {
     public function __construct(
@@ -9,7 +11,7 @@ class AddPatientDTO
         public string $name,
         public string $phone,
         public string $address,
-        public string $dateOfBirth,
+        public CarbonImmutable $dateOfBirth,
         public string $gender,
         public ?string $medicalHistory = null,
         public ?string $allergies = null,

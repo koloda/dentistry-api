@@ -18,6 +18,7 @@ class AuthTest extends TestCase
      */
     public function test_sms_login(): void
     {
+        /** @var \App\Models\User $user */
         $user = UserFactory::new()->create();
         $response = $this->postJson('/api/login/sms', ['phone' => $user->phone]);
         $response->assertStatus(200);
@@ -33,6 +34,7 @@ class AuthTest extends TestCase
 
     public function test_sms_login_with_wrong_number(): void
     {
+        /** @var \App\Models\User $user */
         $user = UserFactory::new()->create(['phone' => '123456789']);
         $response = $this->postJson('/api/login/sms', ['phone' => '111111111']);
         $response->assertStatus(422);
@@ -48,6 +50,7 @@ class AuthTest extends TestCase
 
     public function test_sms_login_with_wrong_code(): void
     {
+        /** @var \App\Models\User $user */
         $user = UserFactory::new()->create();
         $response = $this->postJson('/api/login/sms', ['phone' => $user->phone]);
         $response->assertStatus(200);

@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/appointments', [\App\Http\Controllers\Appointment\AppointmentController::class, 'list'])->name('appointments.list');
     Route::post('/appointments', [\App\Http\Controllers\Appointment\AppointmentController::class, 'add'])->name('appointments.add');
-    Route::post('/appointments/{appointment}/cancel', [\App\Http\Controllers\Appointment\AppointmentController::class, 'cancel'])->name('appointments.cancel');;
+    Route::post('/appointments/{appointment}/cancel', [\App\Http\Controllers\Appointment\AppointmentController::class, 'cancel'])->name('appointments.cancel');
     Route::post('/appointments/{appointment}/move', [\App\Http\Controllers\Appointment\AppointmentController::class, 'move'])->name('appointments.move');
     Route::get('/appointments/agenda', [\App\Http\Controllers\Appointment\AppointmentController::class, 'agenda'])->name('appointments.agenda');
     Route::post('/appointments/{appointment}/complete', [\App\Http\Controllers\Appointment\AppointmentController::class, 'complete'])->name('appointments.complete');

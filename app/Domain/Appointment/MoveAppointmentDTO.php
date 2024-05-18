@@ -9,5 +9,6 @@ class MoveAppointmentDTO
     public function __construct(
         public CarbonImmutable $planned_datetime,
         public ?int $planned_duration,
-    ) {}
+    ) {
+    }
 }

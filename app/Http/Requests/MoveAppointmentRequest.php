@@ -4,15 +4,15 @@ namespace App\Http\Requests;
 
 use App\Domain\Appointment\MoveAppointmentDTO;
 use Carbon\CarbonImmutable;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class MoveAppointmentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
@@ -22,9 +22,15 @@ class MoveAppointmentRequest extends FormRequest
         ];
     }
 
+    /**
+     * @throws InvalidParameterException
+     */
     public function toDTO(): MoveAppointmentDTO
     {
         $planedDatetime = CarbonImmutable::createFromFormat('Y-m-d H:i', $this->input('planned_datetime'));
+        if (! $planedDatetime) {
+            throw new InvalidParameterException('Cannot parse $plannedDatetime');
+        }
 
         return new MoveAppointmentDTO(
             planned_datetime: $planedDatetime,

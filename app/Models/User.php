@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -19,8 +20,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $created_at
  * @property string $updated_at
  * @property-read Clinic $clinic
- *
- * @mixin IdeHelperUser
  */
 class User extends Authenticatable
 {
@@ -58,13 +57,18 @@ class User extends Authenticatable
 
     /**
      * Get the clinic that owns the user.
+     *
+     * @return BelongsTo<Clinic, User>
      */
-    public function clinic(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function clinic(): BelongsTo
     {
         return $this->belongsTo(Clinic::class);
     }
 
-    public function appointments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    /**
+     * @return HasMany<Appointment>
+     */
+    public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class, 'doctor_id');
     }

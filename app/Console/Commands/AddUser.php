@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Domain\Clinic\AddUserAction;
+use App\Models\Clinic;
 use App\Repository\ClinicRepository;
 use Illuminate\Console\Command;
 
@@ -25,13 +26,15 @@ class AddUser extends Command
     /**
      * Execute the console command.
      */
-    public function handle(ClinicRepository $clinicRepository)
+    public function handle(ClinicRepository $clinicRepository): void
     {
         //select clinic from all available clinics
-        $clinicsOptions = array_map(fn ($clinic) => "[{$clinic->id}] ".$clinic->name, \App\Models\Clinic::query()->get()->all());
+        $clinicsOptions = array_map(
+            fn (Clinic $clinic) => "[{$clinic->id}] ".$clinic->name, \App\Models\Clinic::query()->get()->all()
+        );
+        /** @var string $clinicChoice */
         $clinicChoice = $this->choice('Select clinic', $clinicsOptions);
 
-        // get id from response string
         $clinicId = (int) substr($clinicChoice, 1, strpos($clinicChoice, ']') - 1);
 
         $name = $this->ask('What is the name of the user?');
@@ -77,6 +80,10 @@ class AddUser extends Command
         }
     }
 
+    /**
+     * @param  array<string, mixed>  $payload
+     * @param  array<string, mixed>  $rules
+     */
     private function validate(array $payload, array $rules): void
     {
         $validator = \Illuminate\Support\Facades\Validator::make($payload, $rules);

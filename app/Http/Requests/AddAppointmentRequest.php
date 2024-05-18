@@ -2,11 +2,15 @@
 
 namespace App\Http\Requests;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class AddAppointmentRequest extends FormRequest
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         return [
@@ -19,9 +23,15 @@ class AddAppointmentRequest extends FormRequest
         ];
     }
 
+    /**
+     * @throws InvalidParameterException
+     */
     public function toDTO(): \App\Domain\Patient\AddAppointmentDto
     {
-        $planned_datetime = Carbon::createFromFormat('Y-m-d H:i:s', $this->input('planned_datetime'));
+        $planned_datetime = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $this->input('planned_datetime'));
+        if (! $planned_datetime) {
+            throw new InvalidParameterException('Cannot parse $planned_datetime');
+        }
 
         return new \App\Domain\Patient\AddAppointmentDto(
             patient_id: $this->input('patient_id'),

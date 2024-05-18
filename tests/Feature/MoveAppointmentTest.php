@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Domain\Appointment\AppointmentException;
 use App\Models\Appointment;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class MoveAppointmentTest extends TestCase
@@ -13,7 +11,7 @@ class MoveAppointmentTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_move_appointment_to_another_date()
+    public function test_move_appointment_to_another_date(): void
     {
         $doctor = $this->createUser();
         $planedDatetime = now()->addDay()->setHour(10)->setMinutes(0)->setSeconds(0);
@@ -57,7 +55,7 @@ class MoveAppointmentTest extends TestCase
             ])->assertStatus(422);
     }
 
-    public function test_cannot_move_appointment_to_past()
+    public function test_cannot_move_appointment_to_past(): void
     {
         $doctor = $this->createUser();
         $planedDatetime = now()->addDay()->setHour(10)->setMinutes(0)->setSeconds(0);
@@ -77,7 +75,7 @@ class MoveAppointmentTest extends TestCase
             ->assertStatus(400);
     }
 
-    public function test_cannot_move_appointment_to_busy_time()
+    public function test_cannot_move_appointment_to_busy_time(): void
     {
         $doctor = $this->createUser();
         $planedDatetime = now()->addDay()->setHour(10)->setMinutes(0)->setSeconds(0);
@@ -87,7 +85,8 @@ class MoveAppointmentTest extends TestCase
             'planned_duration' => 30,
             'clinic_id' => $doctor->clinic->id,
         ]);
-        $secondAppointment = Appointment::factory()->create([
+
+        Appointment::factory()->create([
             'doctor_id' => $doctor->id,
             'planned_datetime' => $planedDatetime->setHour(11),
             'planned_duration' => 30,

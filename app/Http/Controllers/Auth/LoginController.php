@@ -22,8 +22,10 @@ class LoginController extends Controller
 
     /**
      * Handle the incoming request.
+     *
      * @throws ValidationException
      */
+    // @phpstan-ignore-next-line
     public function sendSms(): array
     {
         $this->validate(request(), [
@@ -43,8 +45,10 @@ class LoginController extends Controller
 
     /**
      * Handle the incoming request.
+     *
      * @throws ValidationException
      */
+    // @phpstan-ignore-next-line
     public function verifySms(): array
     {
         $this->validate(request(), [

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Models\Clinic;
 use App\Models\User;
 
 class UserRepository
@@ -27,6 +26,9 @@ class UserRepository
         return $this->query()->where('phone', $phone)->firstOrFail();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder<User>
+     */
     private function query(): \Illuminate\Database\Eloquent\Builder
     {
         if (! $this->clinicId) {

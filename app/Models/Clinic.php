@@ -21,21 +21,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $created_at
  * @property string $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
- *
- * @mixin IdeHelperClinic
  */
 class Clinic extends Model
 {
     use HasFactory;
 
     /**
-     * Get the users for the clinic.
+     * @return HasMany<User>
      */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
+    /**
+     * @return HasMany<Patient>
+     */
     public function patients(): HasMany
     {
         return $this->hasMany(Patient::class);

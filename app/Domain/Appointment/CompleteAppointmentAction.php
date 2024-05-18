@@ -17,7 +17,7 @@ class CompleteAppointmentAction
         }
 
         $appointment->status = AppointmentStatus::Executed;
-        $appointment->executed_datetime = $dto->executed_datetime ?: now();
+        $appointment->executed_datetime = $dto->executed_datetime ?: now()->toImmutable();
         $appointment->save();
 
         return $appointment;

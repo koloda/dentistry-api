@@ -15,13 +15,13 @@ class CompleteAppointmentTest extends TestCase
 {
     /**
      * @covers \App\Http\Controllers\Appointment\AppointmentController::complete
+     *
      * @dataProvider dataProvider
      */
     public function test_complete_appointment(
         ?Carbon $executed_datetime,
         ?string $description
-    ): void
-    {
+    ): void {
         $doctor = $this->createUser();
         $appointment = Appointment::factory()->create([
             'status' => AppointmentStatus::Scheduled->value,
@@ -39,7 +39,7 @@ class CompleteAppointmentTest extends TestCase
 
         $this->authorizedRequest(
             'postJson',
-            '/api/appointments/' . $appointment->id . '/complete',
+            '/api/appointments/'.$appointment->id.'/complete',
             $payload,
         )->assertOk();
 
@@ -51,6 +51,9 @@ class CompleteAppointmentTest extends TestCase
         ]);
     }
 
+    /**
+     * @return array<array<string, mixed>>
+     */
     public static function dataProvider(): array
     {
         return [
@@ -75,6 +78,7 @@ class CompleteAppointmentTest extends TestCase
 
     /**
      * @covers \App\Http\Controllers\Appointment\AppointmentController::complete
+     *
      * @dataProvider errorsDataProvider
      */
     public function test_complete_appointment_exceptions(
@@ -105,10 +109,13 @@ class CompleteAppointmentTest extends TestCase
 
         $this->authorizedRequest(
             'postJson',
-            '/api/appointments/' . $appointment->id . '/complete',
+            '/api/appointments/'.$appointment->id.'/complete',
         )->assertStatus($expectedCode);
     }
 
+    /**
+     * @return array<array<string, mixed>>
+     */
     public static function errorsDataProvider(): array
     {
         return [

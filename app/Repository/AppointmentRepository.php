@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Domain\Appointment\AppointmentStatus;
 use App\Models\Appointment;
+use App\Models\Clinic;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -21,17 +23,22 @@ class AppointmentRepository
         }
     }
 
+    /**
+     * @return Collection<int, Appointment>
+     */
     public function list(int $clinicId): Collection
     {
         return $this->query()->where('clinic_id', $clinicId)->get();
     }
 
-    public function getDoctorAppointments(User $doctor, Carbon|CarbonImmutable|null $date)
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getDoctorAppointments(User $doctor, Carbon|CarbonImmutable|null $date): Collection
     {
         $query = $this->query()->where('doctor_id', $doctor->id)
             ->with('patient')
             ->orderByRaw('planned_datetime ASC');
-
 
         if ($date) {
             $date = clone $date;
@@ -44,6 +51,9 @@ class AppointmentRepository
         return $query->get();
     }
 
+    /**
+     * @return Builder<Appointment>
+     */
     private function query(): Builder
     {
         if (! $this->clinicId) {
@@ -51,5 +61,16 @@ class AppointmentRepository
         }
 
         return Appointment::query()->where('clinic_id', $this->clinicId);
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getCancelledAppointments(Clinic $clinic): Collection
+    {
+        return $this->query()
+            ->where('clinic_id', $clinic->id)
+            ->where('status', AppointmentStatus::Cancelled->value)
+            ->get();
     }
 }

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ListAppointmentsTest extends TestCase
@@ -13,7 +12,7 @@ class ListAppointmentsTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_list_all_appointments()
+    public function test_list_all_appointments(): void
     {
         $clinic = \App\Models\Clinic::factory()->create();
         $doctor = \App\Models\User::factory()->create([

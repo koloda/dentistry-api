@@ -9,7 +9,7 @@ class ListPatientsTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_list_patients()
+    public function test_list_patients(): void
     {
         $user = $this->createUser();
         \App\Models\Patient::factory()->count(3)->create(['clinic_id' => $user->clinic_id]);

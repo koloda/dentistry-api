@@ -25,7 +25,7 @@ class AddClinic extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $name = $this->ask('What is the name of the clinic?');
         $address = $this->ask('What is the address of the clinic?');
@@ -35,6 +35,7 @@ class AddClinic extends Command
         $logo = '';
         $description = $this->ask('What is the description of the clinic?');
 
+        /** @var string $status */
         $status = $this->choice(
             'What is the status of the clinic?',
             array_map(
@@ -42,8 +43,6 @@ class AddClinic extends Command
                 ClinicStatus::cases()
             ),
         );
-
-        dump($status);
 
         $this->info('You are about to add a clinic with the following details:');
         $this->table(
@@ -63,7 +62,7 @@ class AddClinic extends Command
                     $website,
                     $logo,
                     $description,
-                    $status
+                    $status,
                 );
             } catch (\Exception $e) {
                 $this->error($e->getMessage());

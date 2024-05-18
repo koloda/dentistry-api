@@ -24,6 +24,7 @@ class PatientController extends \App\Http\Controllers\Controller
         return $patient;
     }
 
+    // @phpstan-ignore-next-line
     public function list(PatientRepository $patientRepository): \Illuminate\Database\Eloquent\Collection
     {
         return $patientRepository->list();

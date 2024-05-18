@@ -36,7 +36,7 @@ final readonly class AddAppointmentAction
         }
 
         if ($payload->planned_duration < 1 || $payload->planned_duration > 1440) {
-            throw new AppointmentException('Appointment duration is invalid: ' . $payload->planned_duration);
+            throw new AppointmentException('Appointment duration is invalid: '.$payload->planned_duration);
         }
 
         //check if doctor is available at this time

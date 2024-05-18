@@ -29,11 +29,17 @@ class PatientRepository
         return $this->query()->findOrFail($id);
     }
 
+    /**
+     * @return Collection<int, Patient>
+     */
     public function list(): Collection
     {
         return $this->query()->get();
     }
 
+    /**
+     * @return Builder<Patient>
+     */
     private function query(): Builder
     {
         if (! $this->clinicId) {

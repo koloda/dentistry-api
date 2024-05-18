@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,16 +15,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $email
  * @property string $phone
  * @property string $address
- * @property Carbon $date_of_birth
+ * @property \Carbon\Carbon|\Carbon\CarbonImmutable $date_of_birth
  * @property string $gender
  * @property string $medical_history
  * @property string $allergies
- *
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property Carbon $deleted_at
- *
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
  * @property-read Clinic $clinic
+ *
+ * @mixin \Illuminate\Database\Eloquent\Builder<\App\Models\Patient>
  */
 class Patient extends Model
 {
@@ -46,6 +45,9 @@ class Patient extends Model
         'date_of_birth' => 'date',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Clinic, \App\Models\Patient>
+     */
     public function clinic(): BelongsTo
     {
         return $this->belongsTo(Clinic::class);

@@ -8,7 +8,7 @@ class LoginServeice
 {
     public function sendLoginSms(User $user, SmsService $smsService): string
     {
-        $randomCode = $this->randomCode();
+        $randomCode = (string) $this->randomCode();
         $user->tmp_sms_code = $randomCode;
         $user->save();
 

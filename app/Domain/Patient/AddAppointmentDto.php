@@ -2,8 +2,8 @@
 
 namespace App\Domain\Patient;
 
-use Carbon\Carbon;
 use App\Models\Appointment;
+use Carbon\CarbonImmutable;
 
 class AddAppointmentDto
 {
@@ -11,7 +11,7 @@ class AddAppointmentDto
         public int $patient_id,
         public int $clinic_id,
         public int $doctor_id,
-        public Carbon $planned_datetime,
+        public CarbonImmutable $planned_datetime,
         public string $description,
         public ?int $planned_duration = Appointment::DEFAULT_PLANNED_DURATION,
     ) {

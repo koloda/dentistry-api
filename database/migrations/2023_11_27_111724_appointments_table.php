@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('planned_duration')->nullable();
             $table->dateTime('executed_datetime')->nullable();
             $table->text('description')->nullable();
-            $table->string('status', '20')->default(\App\Domain\Appointment\AppointmentStatus::Scheduled);
+            $table->string('status', 20)->default(\App\Domain\Appointment\AppointmentStatus::Scheduled);
             $table->timestamps();
         });
     }

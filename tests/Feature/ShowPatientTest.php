@@ -11,7 +11,7 @@ class ShowPatientTest extends TestCase
      *
      * @covers \App\Http\Controllers\Patient\PatientController::show
      */
-    public function test_show_patient()
+    public function test_show_patient(): void
     {
         $user = \App\Models\User::factory()->create();
         $patient = \App\Models\Patient::factory()->create(['clinic_id' => $user->clinic_id]);
@@ -32,7 +32,7 @@ class ShowPatientTest extends TestCase
         ]);
     }
 
-    public function test_show_patient_without_auth()
+    public function test_show_patient_without_auth(): void
     {
         $patient = \App\Models\Patient::factory()->create();
 
@@ -41,7 +41,7 @@ class ShowPatientTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_show_patient_from_another_clinic()
+    public function test_show_patient_from_another_clinic(): void
     {
         $user = \App\Models\User::factory()->create();
         $patient = \App\Models\Patient::factory()->create();
@@ -54,7 +54,7 @@ class ShowPatientTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_show_patient_not_found()
+    public function test_show_patient_not_found(): void
     {
         $user = \App\Models\User::factory()->create();
         $token = $user->createToken('test')->plainTextToken;
