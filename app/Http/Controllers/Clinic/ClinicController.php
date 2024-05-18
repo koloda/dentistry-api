@@ -8,6 +8,10 @@ class ClinicController
 {
     public function show(ClinicRepository $clinicRepository): \App\Models\Clinic
     {
-        return $clinicRepository->getById(auth()->user()?->clinic_id);
+        if (! auth()->user()) {
+            abort(403);
+        }
+
+        return $clinicRepository->getById(auth()->user()->clinic_id);
     }
 }

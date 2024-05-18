@@ -7,7 +7,7 @@ use App\Http\Requests\AddPatientRequest;
 use App\Models\Patient;
 use App\Repository\PatientRepository;
 
-class PatientController extends \App\Http\Controllers\Controller
+class PatientController extends \App\Http\Controllers\AuthorisedController
 {
     public function __construct()
     {

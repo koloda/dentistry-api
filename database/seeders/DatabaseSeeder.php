@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $clinics = Clinic::factory(1)->create();
 
         User::factory(1)->create([
+            // @phpstan-ignore-next-line
             'clinic_id' => $clinics->first()->id,
             'phone' => '1234567890',
         ]);
@@ -46,6 +47,7 @@ class DatabaseSeeder extends Seeder
 
                 $patients = $patients->random(random_int(1, 100));
                 \App\Models\Appointment::factory(100)->create([
+                    // @phpstan-ignore-next-line
                     'patient_id' => $patients->first()->id,
                     'clinic_id' => $clinic->id,
                     'doctor_id' => $doctor->id,

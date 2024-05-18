@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('clinic_id')->nullable()->after('id')->constrained('clinics');
             //add phone
-            $table->string('phone')->nullable()->after('email');
+            $table->string('phone')->after('email');
             $table->string('tmp_sms_code')->nullable()->after('phone');
             $table->timestamp('tmp_sms_code_expired_at')->nullable()->after('tmp_sms_code');
         });

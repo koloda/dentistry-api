@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $address
  * @property \Carbon\Carbon|\Carbon\CarbonImmutable $date_of_birth
  * @property string $gender
- * @property string $medical_history
- * @property string $allergies
+ * @property ?string $medical_history
+ * @property ?string $allergies
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at

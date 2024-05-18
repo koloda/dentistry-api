@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Repository\UserRepository;
 use App\Services\LoginServeice;
 use App\Services\SmsService;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+    use ValidatesRequests;
+
     /**
      * Create a new controller instance.
      */

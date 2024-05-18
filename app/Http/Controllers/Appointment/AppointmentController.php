@@ -6,22 +6,25 @@ use App\Domain\Appointment\AddAppointmentAction;
 use App\Domain\Appointment\CancelAppointmentAction;
 use App\Domain\Appointment\CompleteAppointmentAction;
 use App\Domain\Appointment\MoveAppointmentAction;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AuthorisedController;
 use App\Http\Requests\AddAppointmentRequest;
 use App\Http\Requests\CompleteAppointmentRequest;
 use App\Http\Requests\MoveAppointmentRequest;
 use App\Models\Appointment;
-use App\Policies\AppointmentPolicy;
 use App\Repository\AppointmentRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class AppointmentController extends Controller
+/**
+ * @see \App\Policies\AppointmentPolicy
+ */
+class AppointmentController extends AuthorisedController
 {
     use AuthorizesRequests;
 
     public function __construct()
     {
+        parent::__construct();
         /** @see AppointmentPolicy */
         $this->authorizeResource(Appointment::class, 'appointment');
     }
@@ -41,13 +44,13 @@ class AppointmentController extends Controller
     // @phpstan-ignore-next-line
     public function list(AppointmentRepository $repository): Collection
     {
-        return $repository->list(request()->user()->clinic_id);
+        return $repository->list($this->doctor->clinic_id);
     }
 
     // @phpstan-ignore-next-line
     public function agenda(AppointmentRepository $repository): Collection
     {
-        return $repository->getDoctorAppointments(request()->user(), null);
+        return $repository->getDoctorAppointments($this->doctor, null);
     }
 
     public function add(

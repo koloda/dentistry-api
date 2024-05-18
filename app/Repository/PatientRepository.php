@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Models\Clinic;
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -11,11 +11,14 @@ class PatientRepository
 {
     private int $clinicId = 0;
 
-    public function __construct(
-    ) {
-        // if not cli app - use user's clinic id
-        if (auth()->check()) {
-            $this->clinicId = auth()->user()->clinic_id;
+    public function __construct(?User $doctor = null)
+    {
+        if (! $doctor && php_sapi_name() !== 'cli') {
+            throw new \Exception('Doctor is required');
+        }
+
+        if ($doctor instanceof User) {
+            $this->clinicId = $doctor->clinic_id;
         }
     }
 

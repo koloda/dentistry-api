@@ -28,12 +28,17 @@ class AddPatientRequest extends FormRequest
 
     public function toDTO(): AddPatientDTO
     {
+        /** @var \App\Models\User $user */
+        $user = $this->user();
+        /** @var \Carbon\Carbon $date */
+        $date = $this->date('date_of_birth');
+
         return new AddPatientDTO(
-            clinicId: $this->user()->clinic_id,
+            clinicId: $user->clinic_id,
             name: $this->input('name'),
             phone: $this->input('phone'),
             address: $this->input('address'),
-            dateOfBirth: $this->date('date_of_birth')->toImmutable(),
+            dateOfBirth: $date->toImmutable(),
             gender: $this->input('gender'),
             medicalHistory: $this->input('medical_history'),
             allergies: $this->input('allergies'),
