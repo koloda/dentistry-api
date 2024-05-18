@@ -35,7 +35,7 @@ class LoginController extends Controller
             'phone' => 'required|string|exists:users,phone',
         ]);
 
-        $phone = request('phone');
+        $phone = request()->string('phone');
         $user = $this->userRepository->getUserByPhone($phone);
 
         $randomCode = $this->loginService->sendLoginSms($user, $this->smsService);
@@ -59,8 +59,8 @@ class LoginController extends Controller
             'code' => 'required|string',
         ]);
 
-        $phone = request('phone');
-        $code = request('code');
+        $phone = request()->string('phone');
+        $code = request()->string('code');
         $user = $this->userRepository->getUserByPhone($phone);
         $this->loginService->verifySms($user, $code);
 

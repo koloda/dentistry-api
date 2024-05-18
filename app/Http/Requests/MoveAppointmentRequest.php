@@ -27,14 +27,14 @@ class MoveAppointmentRequest extends FormRequest
      */
     public function toDTO(): MoveAppointmentDTO
     {
-        $planedDatetime = CarbonImmutable::createFromFormat('Y-m-d H:i', $this->input('planned_datetime'));
+        $planedDatetime = CarbonImmutable::createFromFormat('Y-m-d H:i', $this->string('planned_datetime'));
         if (! $planedDatetime) {
             throw new InvalidParameterException('Cannot parse $plannedDatetime');
         }
 
         return new MoveAppointmentDTO(
             planned_datetime: $planedDatetime,
-            planned_duration: $this->input('planned_duration'),
+            planned_duration: $this->integer('planned_duration'),
         );
     }
 }

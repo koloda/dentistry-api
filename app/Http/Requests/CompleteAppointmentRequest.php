@@ -22,7 +22,7 @@ class CompleteAppointmentRequest extends FormRequest
     {
         return new CompleteAppointmentDTO(
             executed_datetime: $this->date('executed_datetime')?->toImmutable(),
-            description: $this->input('description'),
+            description: $this->string('description'),
         );
     }
 }

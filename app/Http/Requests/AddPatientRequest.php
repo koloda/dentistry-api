@@ -35,13 +35,13 @@ class AddPatientRequest extends FormRequest
 
         return new AddPatientDTO(
             clinicId: $user->clinic_id,
-            name: $this->input('name'),
-            phone: $this->input('phone'),
-            address: $this->input('address'),
+            name: $this->string('name'),
+            phone: $this->string('phone'),
+            address: $this->string('address'),
             dateOfBirth: $date->toImmutable(),
-            gender: $this->input('gender'),
-            medicalHistory: $this->input('medical_history'),
-            allergies: $this->input('allergies'),
+            gender: $this->string('gender'),
+            medicalHistory: $this->string('medical_history'),
+            allergies: $this->string('allergies'),
         );
     }
 }
