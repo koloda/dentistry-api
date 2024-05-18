@@ -5,13 +5,12 @@ namespace App\Providers;
 use App\Repository\AppointmentRepository;
 use App\Repository\PatientRepository;
 use App\Repository\UserRepository;
+use Illuminate\Support\ServiceProvider;
 
-class RepositoryProvider extends \Illuminate\Support\ServiceProvider
+class RepositoryProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -26,5 +25,13 @@ class RepositoryProvider extends \Illuminate\Support\ServiceProvider
         $this->app->bind(AppointmentRepository::class, function ($app) {
             return new AppointmentRepository($app->make('auth')->user());
         });
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        //
     }
 }

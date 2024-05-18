@@ -122,15 +122,15 @@ class CompleteAppointmentTest extends TestCase
         return [
             [
                 'status' => AppointmentStatus::Executed,
-                'expected_code' => 400,
+                'expectedCode' => 400,
             ],
             [
                 'status' => AppointmentStatus::Cancelled,
-                'expected_code' => 400,
+                'expectedCode' => 400,
             ],
             [
                 'status' => AppointmentStatus::Scheduled,
-                'expected_code' => 403,
+                'expectedCode' => 403,
                 'otherClinic' => true,
             ],
         ];

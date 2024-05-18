@@ -19,9 +19,4 @@ abstract class TestCase extends BaseTestCase
 
         return $user;
     }
-
-    public function createClinic(): \App\Models\Clinic
-    {
-        return \App\Models\Clinic::factory()->create();
-    }
 }
