@@ -97,13 +97,11 @@ class AddAppointmentTest extends TestCase
             'planned_duration' => 60,
         ])->toArray();
 
-        $r = $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
-        $r->dump();
+        $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
 
         $this->expectException(AppointmentException::class);
-        $c = $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
-        dump($c->getStatusCode());
+        $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
         $this->assertDatabaseCount('appointments', 1);
     }
