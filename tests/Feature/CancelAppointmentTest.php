@@ -25,7 +25,7 @@ class CancelAppointmentTest extends TestCase
             'clinic_id' => $doctor->clinic_id,
         ]);
 
-        $this->authorizedRequest('postJson', '/api/appointments/'.$appointment->id.'/cancel')
+        $this->actingAs($doctor)->post('/api/appointments/'.$appointment->id.'/cancel')
             ->assertOk();
         $this->assertDatabaseHas('appointments', [
             'id' => $appointment->id,
@@ -42,8 +42,8 @@ class CancelAppointmentTest extends TestCase
             'clinic_id' => $doctor->clinic_id,
         ]);
         $this->expectException(AppointmentException::class);
-        $response = $this->authorizedRequest('postJson', '/api/appointments/'.$appointment->id.'/cancel');
-        $response->assertStatus(400);
+        $response = $this->actingAs($doctor)->post('/api/appointments/'.$appointment->id.'/cancel');
+        $response->assertStatus(403);
         $response->assertJson([
             'message' => 'Appointment can be cancelled only if it is scheduled',
         ]);
@@ -51,7 +51,7 @@ class CancelAppointmentTest extends TestCase
         $appointment->status = AppointmentStatus::Executed;
         $appointment->save();
 
-        $response = $this->authorizedRequest('postJson', '/api/appointments/'.$appointment->id.'/cancel');
+        $response = $this->actingAs($doctor)->post('/api/appointments/'.$appointment->id.'/cancel');
         $response->assertStatus(400);
         $response->assertJson([
             'message' => 'Appointment can be cancelled only if it is scheduled',

@@ -11,11 +11,11 @@ class ListPatientsTest extends TestCase
      */
     public function test_list_patients(): void
     {
-        $user = $this->createUser();
-        \App\Models\Patient::factory()->count(3)->create(['clinic_id' => $user->clinic_id]);
+        $doctor = $this->createUser();
+        \App\Models\Patient::factory()->count(3)->create(['clinic_id' => $doctor->clinic_id]);
         \App\Models\Patient::factory()->count(3)->create();
 
-        $response = $this->authorizedRequest('getJson', '/api/patients');
+        $response = $this->actingAs($doctor)->get('/api/patients');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([

@@ -6,6 +6,7 @@ use App\Domain\Appointment\AppointmentException;
 use App\Domain\Appointment\AppointmentStatus;
 use App\Models\Appointment;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -13,6 +14,8 @@ use Tests\TestCase;
  */
 class CompleteAppointmentTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @covers \App\Http\Controllers\Appointment\AppointmentController::complete
      *
@@ -37,8 +40,7 @@ class CompleteAppointmentTest extends TestCase
             $payload['description'] = $description;
         }
 
-        $this->authorizedRequest(
-            'postJson',
+        $this->actingAs($doctor)->post(
             '/api/appointments/'.$appointment->id.'/complete',
             $payload,
         )->assertOk();
@@ -107,8 +109,7 @@ class CompleteAppointmentTest extends TestCase
             $this->expectException(AppointmentException::class);
         }
 
-        $this->authorizedRequest(
-            'postJson',
+        $this->actingAs($doctor)->post(
             '/api/appointments/'.$appointment->id.'/complete',
         )->assertStatus($expectedCode);
     }

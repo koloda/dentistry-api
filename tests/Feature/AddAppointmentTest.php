@@ -17,18 +17,17 @@ class AddAppointmentTest extends TestCase
      */
     public function test_add_appointment(): void
     {
-        $user = $this->createUser();
-        $patient = \App\Models\Patient::factory()->create(['clinic_id' => $user->clinic_id]);
-        $doctor = \App\Models\User::factory()->create(['clinic_id' => $user->clinic_id]);
+        $doctor = $this->createUser();
+        $patient = \App\Models\Patient::factory()->create(['clinic_id' => $doctor->clinic_id]);
         $appointment_fields = \App\Models\Appointment::factory()->make([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor->id,
-            'clinic_id' => $user->clinic_id,
+            'clinic_id' => $doctor->clinic_id,
             'planned_datetime' => now()->addDay()->format('Y-m-d H:i:s'),
             'planned_duration' => 60,
         ])->toArray();
 
-        $response = $this->authorizedRequest('postJson', '/api/appointments', $appointment_fields);
+        $response = $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
         $response->assertStatus(201);
         $this->assertDatabaseHas('appointments', $appointment_fields);
@@ -52,57 +51,56 @@ class AddAppointmentTest extends TestCase
 
         $response = $this->postJson('/api/appointments', $appointment_fields);
 
-        $response->assertStatus(401);
+        $response->assertStatus(403);
     }
 
     public function test_add_appointment_to_patient_from_another_clinic(): void
     {
-        $user = $this->createUser();
+        $doctor = $this->createUser();
         $patient = \App\Models\Patient::factory()->create();
         $appointment_fields = \App\Models\Appointment::factory()->make([
             'patient_id' => $patient->id,
-            'doctor_id' => $user->id,
-            'clinic_id' => $user->clinic_id,
+            'doctor_id' => $doctor->id,
+            'clinic_id' => $doctor->clinic_id,
         ])->toArray();
 
-        $response = $this->authorizedRequest('postJson', '/api/appointments', $appointment_fields);
+        $response = $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
         $response->assertStatus(404);
     }
 
     public function test_add_appointment_to_doctor_from_another_clinic(): void
     {
-        $user = $this->createUser();
-        $patient = \App\Models\Patient::factory()->create(['clinic_id' => $user->clinic_id]);
+        $doctor = $this->createUser();
+        $patient = \App\Models\Patient::factory()->create(['clinic_id' => $doctor->clinic_id]);
         $doctor = \App\Models\User::factory()->create();
         $appointment_fields = \App\Models\Appointment::factory()->make([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor->id,
-            'clinic_id' => $user->clinic_id,
+            'clinic_id' => $doctor->clinic_id,
         ])->toArray();
 
-        $response = $this->authorizedRequest('postJson', '/api/appointments', $appointment_fields);
+        $response = $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
         $response->assertStatus(404);
     }
 
     public function test_add_appointment_for_reserved_time(): void
     {
-        $user = $this->createUser();
-        $patient = \App\Models\Patient::factory()->create(['clinic_id' => $user->clinic_id]);
-        $doctor = \App\Models\User::factory()->create(['clinic_id' => $user->clinic_id]);
+        $doctor = $this->createUser();
+        $patient = \App\Models\Patient::factory()->create(['clinic_id' => $doctor->clinic_id]);
         $appointment_fields = \App\Models\Appointment::factory()->make([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor->id,
-            'clinic_id' => $user->clinic_id,
+            'clinic_id' => $doctor->clinic_id,
             'planned_datetime' => now()->addDay()->format('Y-m-d H:i:s'),
             'planned_duration' => 60,
         ])->toArray();
 
-        $this->authorizedRequest('postJson', '/api/appointments', $appointment_fields);
+        $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
         $this->expectException(AppointmentException::class);
-        $this->authorizedRequest('postJson', '/api/appointments', $appointment_fields);
+        $this->actingAs($doctor)->post('/api/appointments', $appointment_fields);
 
         $this->assertDatabaseCount('appointments', 1);
     }

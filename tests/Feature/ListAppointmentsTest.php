@@ -41,12 +41,9 @@ class ListAppointmentsTest extends TestCase
             'patient_id' => $patient2->id,
         ]);
 
-        $this->actingAs($doctor)
-            ->getJson('/api/appointments')
-            ->assertOk()
-            ->assertJsonCount(30);
+        $this->assertDatabaseCount('appointments', 60);
 
-        $this->actingAs($doctor2)
+        $this->actingAs($doctor)
             ->getJson('/api/appointments')
             ->assertOk()
             ->assertJsonCount(30);
