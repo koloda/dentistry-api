@@ -4,7 +4,7 @@ namespace App\Domain\Patient;
 
 use Carbon\CarbonImmutable;
 
-class AddPatientDTO
+class StorePatientDTO
 {
     public function __construct(
         public int $clinicId,

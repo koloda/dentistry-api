@@ -14,6 +14,7 @@ use App\Models\Appointment;
 use App\Repository\AppointmentRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Request;
 
 /**
  * @see \App\Policies\AppointmentPolicy
@@ -24,7 +25,6 @@ class AppointmentController extends AuthorisedController
 
     public function __construct()
     {
-        parent::__construct();
         /** @see AppointmentPolicy */
         $this->authorizeResource(Appointment::class, 'appointment');
     }
@@ -44,13 +44,13 @@ class AppointmentController extends AuthorisedController
     // @phpstan-ignore-next-line
     public function list(AppointmentRepository $repository): Collection
     {
-        return $repository->list($this->doctor->clinic_id);
+        return $repository->list();
     }
 
     // @phpstan-ignore-next-line
-    public function agenda(AppointmentRepository $repository): Collection
+    public function agenda(AppointmentRepository $repository)
     {
-        return $repository->getDoctorAppointments($this->doctor, null);
+        return $repository->getDoctorAppointments(Request::user(), null);
     }
 
     public function add(

@@ -5,14 +5,14 @@ namespace App\Domain\Patient;
 use App\Models\Patient;
 use App\Repository\ClinicRepository;
 
-class AddPatientAction
+readonly class AddPatientAction
 {
     public function __construct(
-        private readonly ClinicRepository $clinicRepository,
+        private ClinicRepository $clinicRepository,
     ) {
     }
 
-    public function execute(AddPatientDTO $payload): Patient
+    public function execute(StorePatientDTO $payload): Patient
     {
         $clinic = $this->clinicRepository->getById($payload->clinicId);
 

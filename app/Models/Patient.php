@@ -42,7 +42,7 @@ class Patient extends Model
     ];
 
     protected $casts = [
-        'date_of_birth' => 'date',
+        'date_of_birth' => 'date:Y-m-d',
     ];
 
     /**
@@ -51,5 +51,10 @@ class Patient extends Model
     public function clinic(): BelongsTo
     {
         return $this->belongsTo(Clinic::class);
+    }
+
+    public function getAge(): int
+    {
+        return $this->date_of_birth->age;
     }
 }

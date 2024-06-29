@@ -4,14 +4,18 @@ namespace App\Domain\Appointment;
 
 use App\Domain\Patient\AddAppointmentDto;
 use App\Models\Appointment;
+use App\Repository\AppointmentRepository;
+use App\Repository\ClinicRepository;
+use App\Repository\PatientRepository;
+use App\Repository\UserRepository;
 
 final readonly class AddAppointmentAction
 {
     public function __construct(
-        private \App\Repository\PatientRepository $patientRepository,
-        private \App\Repository\ClinicRepository $clinicRepository,
-        private \App\Repository\UserRepository $userRepository,
-        private \App\Repository\AppointmentRepository $appointmentRepository,
+        private PatientRepository $patientRepository,
+        private ClinicRepository $clinicRepository,
+        private UserRepository $userRepository,
+        private AppointmentRepository $appointmentRepository,
     ) {
     }
 
@@ -50,7 +54,7 @@ final readonly class AddAppointmentAction
             }
         }
 
-        $appointment = new \App\Models\Appointment();
+        $appointment = new Appointment();
         $appointment->patient_id = $patient->id;
         $appointment->clinic_id = $clinic->id;
         $appointment->doctor_id = $doctor->id;

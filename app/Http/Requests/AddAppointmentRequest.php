@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
@@ -28,6 +29,9 @@ class AddAppointmentRequest extends FormRequest
      */
     public function toDTO(): \App\Domain\Patient\AddAppointmentDto
     {
+        /** @var User $doctor */
+        $doctor = $this->user();
+
         $planned_datetime = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $this->string('planned_datetime'));
         if (! $planned_datetime) {
             throw new InvalidParameterException('Cannot parse $planned_datetime');
@@ -35,7 +39,7 @@ class AddAppointmentRequest extends FormRequest
 
         return new \App\Domain\Patient\AddAppointmentDto(
             patient_id: $this->integer('patient_id'),
-            clinic_id: $this->integer('clinic_id'),
+            clinic_id: $doctor->clinic_id,
             doctor_id: $this->integer('doctor_id'),
             planned_datetime: $planned_datetime,
             description: $this->string('description'),

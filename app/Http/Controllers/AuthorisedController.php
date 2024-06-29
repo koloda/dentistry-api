@@ -11,14 +11,5 @@ class AuthorisedController extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    protected User $doctor;
-
-    public function __construct()
-    {
-        if (! request()->user()) {
-            abort(403);
-        }
-
-        $this->doctor = request()->user();
-    }
+    protected ?User $doctor = null;
 }

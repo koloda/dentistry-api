@@ -30,9 +30,9 @@ class AppointmentRepository
     /**
      * @return Collection<int, Appointment>
      */
-    public function list(int $clinicId): Collection
+    public function list(): Collection
     {
-        return $this->query()->where('clinic_id', $clinicId)->get();
+        return $this->query()->get();
     }
 
     /**

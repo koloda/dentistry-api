@@ -10,9 +10,9 @@ class UserRepository
 
     public function __construct(?User $doctor = null)
     {
-        if (! $doctor && php_sapi_name() !== 'cli') {
-            throw new \Exception('Doctor is required');
-        }
+        // if (! $doctor && php_sapi_name() !== 'cli') {
+        //     throw new \Exception('Doctor is required');
+        // }
 
         if ($doctor instanceof User) {
             $this->clinicId = $doctor->clinic_id;

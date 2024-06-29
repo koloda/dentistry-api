@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Domain\Patient\AddPatientDTO;
+use App\Domain\Patient\StorePatientDTO;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\In;
 
@@ -26,14 +26,14 @@ class AddPatientRequest extends FormRequest
         ];
     }
 
-    public function toDTO(): AddPatientDTO
+    public function toDTO(): StorePatientDTO
     {
         /** @var \App\Models\User $user */
         $user = $this->user();
         /** @var \Carbon\Carbon $date */
         $date = $this->date('date_of_birth');
 
-        return new AddPatientDTO(
+        return new StorePatientDTO(
             clinicId: $user->clinic_id,
             name: $this->string('name'),
             phone: $this->string('phone'),
