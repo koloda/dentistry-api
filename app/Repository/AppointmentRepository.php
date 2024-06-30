@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Domain\Appointment\AppointmentStatus;
+use App\Domain\Appointment\ListAppointmentDTO;
 use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\User;
@@ -38,18 +39,18 @@ class AppointmentRepository
     /**
      * @return Collection<int, Appointment>
      */
-    public function getDoctorAppointments(User $doctor, Carbon|CarbonImmutable|null $date): Collection
+    public function getDoctorAppointments(
+        User $doctor,
+        ?ListAppointmentDTO $params = null,
+    ): Collection
     {
         $query = $this->query()->where('doctor_id', $doctor->id)
             ->with('patient')
             ->orderByRaw('planned_datetime ASC');
 
-        if ($date) {
-            $date = clone $date;
-            $query->whereBetween('planned_datetime', [
-                $date->startOfDay()->toDateTimeString(),
-                $date->endOfDay()->toDateTimeString(),
-            ]);
+        if ($params) {
+            $query->where('planned_datetime', '>=', $params->fromDate)
+                ->where('planned_datetime', '<=', $params->toDate);
         }
 
         return $query->get();

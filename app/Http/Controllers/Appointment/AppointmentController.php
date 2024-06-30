@@ -9,6 +9,7 @@ use App\Domain\Appointment\MoveAppointmentAction;
 use App\Http\Controllers\AuthorisedController;
 use App\Http\Requests\AddAppointmentRequest;
 use App\Http\Requests\CompleteAppointmentRequest;
+use App\Http\Requests\ListAppointmentsRequest;
 use App\Http\Requests\MoveAppointmentRequest;
 use App\Models\Appointment;
 use App\Repository\AppointmentRepository;
@@ -48,9 +49,9 @@ class AppointmentController extends AuthorisedController
     }
 
     // @phpstan-ignore-next-line
-    public function agenda(AppointmentRepository $repository)
+    public function agenda(ListAppointmentsRequest $request, AppointmentRepository $repository)
     {
-        return $repository->getDoctorAppointments(Request::user(), null);
+        return $repository->getDoctorAppointments(Request::user(), $request->toDTO());
     }
 
     public function add(
