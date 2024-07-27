@@ -32,4 +32,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/appointments/{appointment}/move', [\App\Http\Controllers\Appointment\AppointmentController::class, 'move'])->name('appointments.move');
     Route::get('/appointments/agenda', [\App\Http\Controllers\Appointment\AppointmentController::class, 'agenda'])->name('appointments.agenda');
     Route::post('/appointments/{appointment}/complete', [\App\Http\Controllers\Appointment\AppointmentController::class, 'complete'])->name('appointments.complete');
+    Route::get('/appointments/patient/{patient}', [\App\Http\Controllers\Appointment\AppointmentController::class, 'forPatient'])->name('appointments.forPatient');
 });

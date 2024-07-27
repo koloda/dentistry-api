@@ -12,6 +12,7 @@ use App\Http\Requests\CompleteAppointmentRequest;
 use App\Http\Requests\ListAppointmentsRequest;
 use App\Http\Requests\MoveAppointmentRequest;
 use App\Models\Appointment;
+use App\Models\Patient;
 use App\Repository\AppointmentRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -48,10 +49,21 @@ class AppointmentController extends AuthorisedController
         return $repository->list();
     }
 
-    // @phpstan-ignore-next-line
+    /**
+     * @return Collection<int, Appointment>
+     */
     public function agenda(ListAppointmentsRequest $request, AppointmentRepository $repository)
     {
-        return $repository->getDoctorAppointments(Request::user(), $request->toDTO());
+        // @phpstan-ignore-next-line
+        return $repository->getDoctorAppointments(Request::user());
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function forPatient(Patient $patient, AppointmentRepository $repository): Collection
+    {
+        return $repository->getPatientAppointments($patient);
     }
 
     public function add(

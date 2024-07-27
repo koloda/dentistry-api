@@ -6,6 +6,7 @@ use App\Domain\Appointment\AppointmentStatus;
 use App\Domain\Appointment\ListAppointmentDTO;
 use App\Models\Appointment;
 use App\Models\Clinic;
+use App\Models\Patient;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -52,6 +53,18 @@ class AppointmentRepository
             $query->where('planned_datetime', '>=', $params->fromDate)
                 ->where('planned_datetime', '<=', $params->toDate);
         }
+
+        return $query->get();
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getPatientAppointments(Patient $patient): Collection
+    {
+        $query = $this->query()->where('patient_id', $patient->id)
+            ->with('doctor')
+            ->orderByRaw('planned_datetime ASC');
 
         return $query->get();
     }

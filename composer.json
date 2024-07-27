@@ -1,11 +1,11 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Dentistry API",
+    "keywords": ["api", "dentistry"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "laravel/framework": "^11.7",
         "laravel/sanctum": "^4.0"
     },
